@@ -4,106 +4,257 @@
   <meta charset="UTF-8" />
   <title>King's Lynne — Hytale Server</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #020617;
-      color: #e5e7eb;
-      text-align: center;
+    :root{
+      --bg0:#020617;
+      --bg1:#050b1f;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.08);
+      --border: rgba(148,163,184,0.18);
+      --text:#e5e7eb;
+      --muted:#cbd5f5;
+      --muted2:#94a3b8;
+      --accent:#38bdf8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 50% 0%, rgba(56,189,248,0.14), transparent 60%),
+        radial-gradient(900px 500px at 10% 20%, rgba(167,139,250,0.10), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(34,211,238,0.08), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+      min-height: 100vh;
       padding: 4rem 1rem;
     }
 
-    .logo {
-      max-width: 220px;
-      margin-bottom: 1.5rem;
+    /* subtle vignette */
+    body:before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      background: radial-gradient(circle at 50% 20%, transparent 0%, rgba(0,0,0,0.55) 75%);
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.25rem;
+    .wrap{
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
     }
 
-    .subtitle {
-      font-size: 1.2rem;
-      color: #cbd5f5;
-      margin-bottom: 1.5rem;
+    .hero{
+      padding: 2.25rem 1.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
     }
 
-    .ip {
-      font-family: monospace;
-      background: #020617;
-      border: 1px solid #334155;
-      display: inline-block;
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      margin-bottom: 2rem;
+    .logo{
+      display:block;
+      width: min(420px, 70vw);
+      margin: 0 auto 1.25rem;
+      filter: drop-shadow(0 18px 35px rgba(0,0,0,0.65));
+      opacity: 0.98;
     }
 
-    hr {
-      border: none;
-      border-top: 1px solid #334155;
-      max-width: 500px;
-      margin: 2.5rem auto;
+    h1{
+      margin: 0;
+      font-size: clamp(2.2rem, 4vw, 3.1rem);
+      letter-spacing: -0.02em;
+      display:flex;
+      gap: 0.65rem;
+      align-items:center;
+      justify-content:center;
     }
 
-    h2 {
-      margin-bottom: 1rem;
-      font-size: 1.6rem;
+    .subtitle{
+      margin-top: 0.6rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      display:flex;
+      gap: .6rem;
+      justify-content:center;
+      align-items:center;
     }
 
-    ul {
+    .dot{
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(203,213,245,0.65);
+      display:inline-block;
+    }
+
+    .actions{
+      margin-top: 1.4rem;
+      display:flex;
+      justify-content:center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .chip{
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,0.35);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      gap: 0.65rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .chip strong{ color: white; font-weight: 700; }
+
+    button.copy{
+      border: 1px solid rgba(56,189,248,0.35);
+      background: rgba(56,189,248,0.12);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 650;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+    }
+    button.copy:hover{
+      background: rgba(56,189,248,0.18);
+      border-color: rgba(56,189,248,0.55);
+    }
+    button.copy:active{ transform: translateY(1px); }
+
+    .grid{
+      margin-top: 1.25rem;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .panel{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      padding: 1.25rem 1.25rem;
+      backdrop-filter: blur(10px);
+    }
+
+    h2{
+      margin: 0 0 0.8rem 0;
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .mods{
       list-style: none;
       padding: 0;
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
+      margin: 0;
     }
 
-    li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #1e293b;
+    .mods li{
+      display:flex;
+      justify-content:space-between;
+      gap: 1rem;
+      padding: 0.8rem 0.2rem;
+      border-bottom: 1px solid rgba(148,163,184,0.14);
+      color: var(--text);
     }
+    .mods li:last-child{ border-bottom: none; }
 
-    footer {
-      margin-top: 3rem;
+    .tag{
+      color: var(--muted2);
       font-size: 0.9rem;
-      opacity: 0.6;
+      white-space: nowrap;
+    }
+
+    footer{
+      text-align:center;
+      margin-top: 1.6rem;
+      color: rgba(203,213,245,0.55);
+      font-size: 0.9rem;
+    }
+
+    /* nicer spacing on small screens */
+    @media (max-width: 520px){
+      body{ padding: 2.5rem 1rem; }
+      .hero{ padding: 1.75rem 1.1rem; }
+      .chip{ width: 100%; justify-content: center; }
+      button.copy{ width: 100%; }
+      .mods li{ flex-direction: column; align-items:flex-start; }
+      .tag{ white-space: normal; }
     }
   </style>
 </head>
+
 <body>
+  <div class="wrap">
+    <div class="hero">
+      <img
+        src="assets/Hytale-Logo-Illustrated.png"
+        alt="Hytale"
+        class="logo"
+      />
 
-  <img
-    src="assets/Hytale-Logo-Illustrated-800-400.png"
-    alt="Hytale Logo"
-    class="logo"
-  />
+      <h1>⚔️ King's Lynne</h1>
 
-  <h1>⚔️ King's Lynne</h1>
-  <div class="subtitle">PvP • North America</div>
+      <div class="subtitle">
+        <span>PvP</span><span class="dot"></span><span>North America</span>
+      </div>
 
-  <div class="ip">
-    IP / Port: <strong>51.79.121.77:25571</strong>
+      <div class="actions">
+        <div class="chip" id="ipChip">
+          IP / Port: <strong id="ipText">51.79.121.77:25571</strong>
+        </div>
+
+        <button class="copy" id="copyBtn" type="button">
+          Copy IP
+        </button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <h2>Installed Mods</h2>
+        <ul class="mods">
+          <li><span>Ymmersive Melodies</span><span class="tag">Music</span></li>
+          <li><span>Simply Trash</span><span class="tag">Utility</span></li>
+          <li><span>Aures – Livestock Skins</span><span class="tag">Cosmetics</span></li>
+          <li><span>Aures – Horse Skins</span><span class="tag">Cosmetics</span></li>
+          <li><span>Skeleton Banging Shield</span><span class="tag">Fun</span></li>
+          <li><span>One Query</span><span class="tag">Server Listing</span></li>
+          <li><span>[NoCube's] Undead Warriors</span><span class="tag">Enemies</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      Not affiliated with Hypixel Studios.
+    </footer>
   </div>
 
-  <hr />
+  <script>
+    (function () {
+      const ip = "51.79.121.77:25571";
+      const btn = document.getElementById("copyBtn");
 
-  <h2>Installed Mods</h2>
-
-  <ul>
-    <li>Ymmersive Melodies</li>
-    <li>Simply Trash</li>
-    <li>Aures – Livestock Skins</li>
-    <li>Aures – Horse Skins</li>
-    <li>Skeleton Banging Shield</li>
-    <li>One Query</li>
-    <li>[NoCube's] Undead Warriors</li>
-  </ul>
-
-  <footer>
-    <p>Not affiliated with Hypixel Studios.</p>
-  </footer>
-
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(ip);
+          const old = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => (btn.textContent = old), 1200);
+        } catch (e) {
+          // Fallback: prompt copy
+          window.prompt("Copy server address:", ip);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
